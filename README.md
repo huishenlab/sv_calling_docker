@@ -37,13 +37,13 @@ Push it onto dockerhub:
 docker login --username huishenlab
 ```
 
-2a) You'll now be prompted for a password:
+3) You'll now be prompted for a password:
 
 ```
 Password: your_access_token_goes_here
 ```
 
-3) Now tag and push it:
+4) Now tag and push it:
 
 ```
 # Tag the release
