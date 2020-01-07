@@ -15,3 +15,4 @@ TODO: automate this documentation process.
 * smoove: 0.2.5
 * delly: 0.8.1
 * manta: 1.6.0
+* SURVIVOR: 1.0.7
