@@ -60,17 +60,18 @@ will need to pull and build the .sif file using singularity.
 
 ```
 # Load the singularity module
-module load singularity
+# Note this is currently (2020-01-7) not needed
+# module load singularity
 
 # Pull the docker image and generate a SIF file
-singularity pull docker://varishenlab/sv_calling:sv_calling_new_version
+singularity pull docker://varishenlab/sv_calling:sv_calling_v1.1
 ```
 
 ### Pull the container using Docker
 
 ```
 # Pull the docker image
-docker pull varishenlab/sv_calling:sv_calling_new_version
+docker pull varishenlab/sv_calling:sv_calling_v1.1
 ```
 
 
@@ -78,8 +79,8 @@ docker pull varishenlab/sv_calling:sv_calling_new_version
 
 ```
 # Using singularity
-singularity shell sv_calling_new_version.sif
+singularity shell sv_calling_v1.1.sif
 
 # Using docker
-docker run -it varishenlab:sv_calling_new_version /bin/bash
+docker run -it varishenlab:sv_calling_v1.1 /bin/bash
 ```
