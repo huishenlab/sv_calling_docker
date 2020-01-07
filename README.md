@@ -29,12 +29,12 @@ docker build --no-cache -t huishenlab:sv_calling
 
 Push it onto dockerhub:
 
-1) Generate an access token from the huishenlab dockerhub.
+1) Generate an access token from the varishenlab dockerhub.
 
 2) Login to docker using the access token:
 
 ```
-docker login --username huishenlab
+docker login --username varishenlab
 ```
 
 3) You'll now be prompted for a password:
@@ -47,10 +47,10 @@ Password: your_access_token_goes_here
 
 ```
 # Tag the release
-docker tag huishenlab:sv_calling huishenlab/sv_calling:sv_calling_new_version
+docker tag varishenlab:sv_calling varishenlab/sv_calling:sv_calling_new_version
 
 # Push
-docker push huishenlab/sv_calling:sv_calling_new_version
+docker push varishenlab/sv_calling:sv_calling_new_version
 ```
 
 ### Pull the container via singularity
@@ -63,14 +63,14 @@ will need to pull and build the .sif file using singularity.
 module load singularity
 
 # Pull the docker image and generate a SIF file
-singularity pull docker://huishenlab/sv_calling:sv_calling_new_version
+singularity pull docker://varishenlab/sv_calling:sv_calling_new_version
 ```
 
 ### Pull the container using Docker
 
 ```
 # Pull the docker image
-docker pull huishenlab/sv_calling:sv_calling_new_version
+docker pull varishenlab/sv_calling:sv_calling_new_version
 ```
 
 
@@ -81,5 +81,5 @@ docker pull huishenlab/sv_calling:sv_calling_new_version
 singularity shell sv_calling_new_version.sif
 
 # Using docker
-docker run -it huishenlab:sv_calling_new_version /bin/bash
+docker run -it varishenlab:sv_calling_new_version /bin/bash
 ```
