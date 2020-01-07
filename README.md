@@ -6,13 +6,13 @@ This repository contains a dockerfile and build script to make a container for S
 The main goal of building this container is simplify the dependency requirements to jointly call SVs
 from WGS and WGBS using either BWA or BISCUIT, respectively.
 
-BISCUIT: [https://github.com/huishenlab/biscuit!](https://github.com/huishenlab/biscuit)
+BISCUIT: [https://github.com/huishenlab/biscuit](https://github.com/huishenlab/biscuit)
 
 ### Building a new container
 
 To build a container, you need to have Docker installed (which requires one to have root access)
 
-Clone the repo:
+1) Clone the repo:
 
 ```
 git clone https://github.com/huishenlab/sv_calling_docker.git
@@ -29,21 +29,21 @@ docker build --no-cache -t huishenlab:sv_calling
 
 Push it onto dockerhub:
 
-Generate an access token from the huishenlab dockerhub.
+1) Generate an access token from the huishenlab dockerhub.
 
-Login to docker using the access token:
+2) Login to docker using the access token:
 
 ```
 docker login --username huishenlab
 ```
 
-You'll now be prompted for a password:
+2a) You'll now be prompted for a password:
 
 ```
 Password: your_access_token_goes_here
 ```
 
-Now tag and push it:
+3) Now tag and push it:
 
 ```
 # Tag the release
@@ -51,4 +51,35 @@ docker tag huishenlab:sv_calling huishenlab/sv_calling:sv_calling_new_version
 
 # Push
 docker push huishenlab/sv_calling:sv_calling_new_version
+```
+
+### Pull the container via singularity
+
+To use the container on HPC, which doesn't have a Docker daemon running, you
+will need to pull and build the .sif file using singularity.
+
+```
+# Load the singularity module
+module load singularity
+
+# Pull the docker image and generate a SIF file
+singularity pull docker://huishenlab/sv_calling:sv_calling_new_version
+```
+
+### Pull the container using Docker
+
+```
+# Pull the docker image
+docker pull huishenlab/sv_calling:sv_calling_new_version
+```
+
+
+### Logging into the container to see where things are
+
+```
+# Using singularity
+singularity shell sv_calling_new_version.sif
+
+# Using docker
+docker run -it huishenlab:sv_calling_new_version /bin/bash
 ```
