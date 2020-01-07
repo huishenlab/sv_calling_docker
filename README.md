@@ -24,7 +24,7 @@ Ideally, documenting any changes should be done in the NEWS.md since it is effec
 (Re)build the container:
 
 ```
-docker build --no-cache -t huishenlab:sv_calling
+docker build --no-cache -t varishenlab:sv_calling .
 ```
 
 Push it onto dockerhub:
