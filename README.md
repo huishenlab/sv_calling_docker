@@ -7,6 +7,7 @@ The main goal of building this container is simplify the dependency requirements
 from WGS and WGBS using either BWA or BISCUIT, respectively.
 
 BISCUIT: [https://github.com/huishenlab/biscuit](https://github.com/huishenlab/biscuit)
+bwa: [http://bio-bwa.sourceforge.net/](http://bio-bwa.sourceforge.net/)
 
 ### Building a new container
 
@@ -47,10 +48,10 @@ Password: your_access_token_goes_here
 
 ```
 # Tag the release
-docker tag varishenlab:sv_calling varishenlab/sv_calling:sv_calling_new_version
+docker tag varishenlab:sv_calling varishenlab/sv_calling:sv_calling
 
 # Push
-docker push varishenlab/sv_calling:sv_calling_new_version
+docker push varishenlab/sv_calling:sv_calling
 ```
 
 ### Pull the container via singularity
@@ -64,14 +65,17 @@ will need to pull and build the .sif file using singularity.
 # module load singularity
 
 # Pull the docker image and generate a SIF file
-singularity pull docker://varishenlab/sv_calling:sv_calling_v1.1
+singularity pull docker://varishenlab/sv_calling:sv_calling
+
+# Rename because the repo name gets appended
+mv sv_calling_sv_calling.sif sv_calling.sif
 ```
 
 ### Pull the container using Docker
 
 ```
 # Pull the docker image
-docker pull varishenlab/sv_calling:sv_calling_v1.1
+docker pull varishenlab/sv_calling:sv_calling
 ```
 
 
@@ -79,8 +83,8 @@ docker pull varishenlab/sv_calling:sv_calling_v1.1
 
 ```
 # Using singularity
-singularity shell sv_calling_v1.1.sif
+singularity shell sv_calling.sif
 
 # Using docker
-docker run -it varishenlab:sv_calling_v1.1 /bin/bash
+docker run -it varishenlab:sv_calling /bin/bash
 ```

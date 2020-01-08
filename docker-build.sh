@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 set -euo pipefail
@@ -33,6 +34,13 @@ make -j4 install
 
 cd $basedir
 
+# install GRIDSS
+mkdir gridss && cd gridss
+wget -q https://github.com/PapenfussLab/gridss/releases/download/v2.7.3/gridss-2.7.3-gridss-jar-with-dependencies.jar
+ln -s gridss-2.7.3-gridss-jar-with-dependencies.jar /usr/local/bin/gridss.jar
+
+cd $basedir
+
 # install SURVIVOR
 git clone https://github.com/fritzsedlazeck/SURVIVOR.git
 cd SURVIVOR/Debug
@@ -45,8 +53,19 @@ cd $basedir
 wget -qO /usr/bin/biscuit https://github.com/zwdzwd/biscuit/releases/download/v0.3.14.20200104/biscuit_0_3_14_linux_amd64
 chmod +x /usr/bin/biscuit
 
+# install bwa
+wget -qO bwa.tar.bz2 https://sourceforge.net/projects/bio-bwa/files/bwa-0.7.17.tar.bz2
+tar xjvf bwa.tar.bz2
+cd bwa-0.7.17
+make
+cp ./bwa /usr/bin/bwa
+chmod +x /usr/bin/bwa
+
+cd $basedir
+
 rm -rf lumpy-sv
 rm manta.tar.bz2
+rm bwa.tar.bz2
 rm -rf /var/lib/apt/lists/*
 
 echo "done"
