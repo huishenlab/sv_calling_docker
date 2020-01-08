@@ -7,6 +7,7 @@ The main goal of building this container is simplify the dependency requirements
 from WGS and WGBS using either BWA or BISCUIT, respectively.
 
 BISCUIT: [https://github.com/huishenlab/biscuit](https://github.com/huishenlab/biscuit)
+
 bwa: [http://bio-bwa.sourceforge.net/](http://bio-bwa.sourceforge.net/)
 
 ### Building a new container
