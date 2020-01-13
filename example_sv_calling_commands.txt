@@ -1,0 +1,76 @@
+######## SV CALLING ##########
+
+# All the SV calling was done using the varishenlab/sv_calling:sv_calling docker container
+
+# Container version sha digest: sha256:a40c01d9bacda63435919fa4ff6777829ec2a55c85fdccd34232d25c54431c1b
+
+# Pulled and converted to a singularity .sif file on 2020-01-09 using singularity v3.4
+
+######## NOTE THAT THE SYMLINKS BREAK WHEN CONVERTING TO SINGULARITY #########
+
+# Execute commands from within the container and bind up the following paths:
+export SINGULARITY_BIND="/secondary/projects/triche/ben_projects:/data"
+singularity shell sv_calling.sif
+
+##############################
+
+## TCGA UCEC A1CI Tumor Normal WGBS SV calling
+
+## Delly
+
+# call joint SVs
+delly call \ 
+-g /data/references/human/hg38/indexes/biscuit_gencode/GRCh38.primary_assembly.genome.fa \
+-x ../polaris_wgs/delly_hg38_chrs_to_exclude_polaris.sorted.bed \
+-o tcga_wgbs_ucec_raw_somatic.sv.bcf \
+TCGA_UCEC_A1CI.sorted.markdup.withdisc_split_clip.hg38.bam \
+TCGA_UCEC_NA1CI.sorted.markdup.withdisc_split_clip.hg38.bam
+
+# INITIAL OUTPUT
+[2020-Jan-09 18:28:50] Sample statistics
+Sample:TCGA_UCEC_A1CI,ReadSize=100,Median=209,MAD=47,UniqueDiscordantPairs=10550114
+Sample:TCGA_UCEC_NA1CI,ReadSize=99,Median=217,MAD=47,UniqueDiscordantPairs=10248714
+[2020-Jan-09 18:28:50] Done.
+
+
+## Manta
+
+# call somatic joint manta SVs
+# configure the workflow script
+/usr/local/bin/manta/bin/configManta.py \
+--tumorBam TCGA_UCEC_A1CI.sorted.markdup.withdisc_split_clip.hg38.bam \
+--normalBam TCGA_UCEC_NA1CI.sorted.markdup.withdisc_split_clip.hg38.bam \
+--callRegions manta_call_regions_hg38_blklst_exclude_primary_assembly_no_chrM.bed.gz \
+--runDir tcga_hg38_wgbs_manta_calls \
+--referenceFasta /data/references/human/hg38/indexes/biscuit_gencode/GRCh38.primary_assembly.genome.fa
+
+# execute the analysis script
+# run with 40 cores
+/data/biscuit_manuscript/analysis/biscuit_tcga_ucec/tcga_hg38_wgbs_manta_calls/runWorkflow.py -j 40
+
+
+## Smoove
+
+# run lumpy_filter a priori since it's WAY faster this way
+# the disc and split reads out of samblaster != to extracted by lumpy_filter
+lumpy_filter \
+-f ~/secondary_projects/triche/ben_projects/references/human/hg38/indexes/biscuit_gencode/GRCh38.primary_assembly.genome.fa \
+TCGA_UCEC_NA1CI.sorted.markdup.withdisc_split_clip.hg38.bam \
+TCGA_UCEC_NA1CI.split.bam \
+TCGA_UCEC_NA1CI.disc.bam
+
+lumpy_filter \
+-f ~/secondary_projects/triche/ben_projects/references/human/hg38/indexes/biscuit_gencode/GRCh38.primary_assembly.genome.fa \
+TCGA_UCEC_A1CI.sorted.markdup.withdisc_split_clip.hg38.bam \
+TCGA_UCEC_A1CI.split.bam \
+TCGA_UCEC_A1CI.disc.bam
+
+# call joint SVs
+smoove call -x \
+--exclude /data/biscuit_manuscript/analysis/polaris_wgs/merged_blacklist.hg38.bed \
+--name tcga_hg38_ucec_smoove \
+--fasta /data/references/human/hg38/indexes/biscuit_gencode/GRCh38.primary_assembly.genome.fa \
+--outdir smoove_hg38_tcga_ucec_wgbs_calls \
+-d --genotype \
+TCGA_UCEC_A1CI.sorted.markdup.withdisc_split_clip.hg38.bam \
+TCGA_UCEC_NA1CI.sorted.markdup.withdisc_split_clip.hg38.bam
