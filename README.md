@@ -87,5 +87,5 @@ docker pull varishenlab/sv_calling:sv_calling
 singularity shell sv_calling.sif
 
 # Using docker
-docker run -it varishenlab:sv_calling /bin/bash
+docker run -it varishenlab/sv_calling:sv_calling /bin/bash
 ```
